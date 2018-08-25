@@ -35,7 +35,11 @@ async function scrapeCragslist() {
             const title = resultTitle.text();
             const url = resultTitle.attr('href');
             
-            const scrapeResult = {title, url};
+            const resultDate= $(element).children("time")
+            const date = new Date(resultDate.attr('datetime'));
+
+
+            const scrapeResult = {title, url, date};
             scrapeResults.push(scrapeResult);
 
         });
