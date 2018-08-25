@@ -23,18 +23,20 @@ const scrapeResult = {
 async function scrapeCragslist() {
     try{
         const htmlRequest = await request.get(url);
-        console.log(htmlRequest);
+        // console.log(htmlRequest);
   
-        $('.result-info').each((index,element) => {
+        const $ = await cheerio.load(htmlRequest);
+        
+        $(".result-info").each((index,element) => {
             console.log(
                 $(element)
-                    .children('result-title')
+                    .children(".result-title")
                     .text()
             );
         });
-  
+    
     }catch(err){
 
     }   
 }
-scrapeCraglist();
+scrapeCragslist();
