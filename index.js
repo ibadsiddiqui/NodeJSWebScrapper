@@ -36,6 +36,7 @@ async function scrapeCragslist() {
             const url = resultTitle.attr('href');
             
             const scrapeResult = {title, url};
+            scrapeResults.push(scrapeResult);
 
         });
 
