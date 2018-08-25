@@ -5,8 +5,12 @@ const cheerio = require('cheerio');
 const url = 'https://sfbay.craiglist.org/d/software-qa-dba-etc/search/sof' 
 
 async function scrapeCraglist() {
-    
-    const htmlRequest = await request.get(url)
+    try{
+        const htmlRequest = await request.get(url)
+        console.log(htmlRequest)
+    }catch(err){
+
+    }
 
     
 }
