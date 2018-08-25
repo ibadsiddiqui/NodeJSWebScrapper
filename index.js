@@ -22,7 +22,7 @@ const scrapeResult = {
 })*/
 
 const scrapeResults = []
-async function scrapeCragslist() {
+async function scrapeJobHeader() {
     try{
         const htmlRequest = await request.get(url);
         // console.log(htmlRequest);
@@ -31,22 +31,55 @@ async function scrapeCragslist() {
         
         $(".result-info").each((index,element) => {
             
-            const resultTitle = $(element).children(".result-title")
+            const resultTitle = $(element).children(".result-title");
             const title = resultTitle.text();
             const url = resultTitle.attr('href');
             
-            const resultDate= $(element).children("time")
+            const resultDate= $(element).children("time");
             const date = new Date(resultDate.attr('datetime'));
 
+            const resultHood = $(element).find(".result-hood");
+            const hood = resultHood.text();
 
-            const scrapeResult = {title, url, date};
+            const scrapeResult = {title, url, date, hood};
             scrapeResults.push(scrapeResult);
 
         });
+        // console.log(scrapeResults);
+        return scrapeResults;
 
-        console.log(scrapeResults)
     }catch(err){
-
+        console.log(err);
     }   
 }
-scrapeCragslist();
+
+async function scrapeDescriptions(jobsWithHeaders) {
+    return Promise.all(
+        jobsWithHeaders.map( async job => {
+            try {
+                const htmlResult = await request.get(job.url);
+                const $ = await cheerio.load(htmlResult);
+                
+                $(".print-qrcode-container").remove();
+                
+                job.description = $("#postingbody").text();
+                job.address = $("div.mapaddress").text();
+    
+                const compensationText = $(".attrgroup").children().first().text();
+                job.compensation = compensationText.replace("compensation: ", "");
+    
+                return job;                
+            } catch (error) {
+                console.error(error)
+            }
+
+        }));
+}
+
+async function scrapeCraigslist() {
+    const jobsWithHeaders = await scrapeJobHeader();
+    const jobsFullData = await scrapeDescriptions(jobsWithHeaders);
+    console.log(jobsWithHeaders)
+
+}
+scrapeCraigslist();
