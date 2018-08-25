@@ -12,5 +12,4 @@ async function scrapeCragslist() {
 
     }   
 }
-
-scrapeCraglist()
+scrapeCraglist();
