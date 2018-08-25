@@ -12,10 +12,27 @@ const scrapeResult = {
     address: "1201 Brant St.",
     compensation: '23/hr'
 }
+
+
+// see if the jqeusry is enabled on the page by typing $ on the console.
+
+// if ues then:
+/* $(id/class).each((index,element) => {
+    console..log($(element).children(id/class).text())
+})*/
 async function scrapeCragslist() {
     try{
         const htmlRequest = await request.get(url);
         console.log(htmlRequest);
+  
+        $('.result-info').each((index,element) => {
+            console.log(
+                $(element)
+                    .children('result-title')
+                    .text()
+            );
+        });
+  
     }catch(err){
 
     }   
