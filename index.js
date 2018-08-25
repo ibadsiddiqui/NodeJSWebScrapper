@@ -20,6 +20,8 @@ const scrapeResult = {
 /* $(id/class).each((index,element) => {
     console..log($(element).children(id/class).text())
 })*/
+
+const scrapeResults = []
 async function scrapeCragslist() {
     try{
         const htmlRequest = await request.get(url);
@@ -28,13 +30,17 @@ async function scrapeCragslist() {
         const $ = await cheerio.load(htmlRequest);
         
         $(".result-info").each((index,element) => {
-            console.log(
-                $(element)
-                    .children(".result-title")
-                    .text()
-            );
+            
+            const resultTitle = $(element).children(".result-title")
+            const title = resultTitle.text();
+            const url = resultTitle.attr('href');
+            
+            const scrapeResult = {title, url};
+            scrapeResults.push(scrapeResult);
+
         });
-    
+
+        console.log(scrapeResults)
     }catch(err){
 
     }   
